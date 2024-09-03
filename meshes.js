@@ -1,5 +1,13 @@
 import * as THREE from "three";
-
+import sun from "./textures/sun.jpg";
+import mercury from "./textures/mercury.jpg";
+import venus from "./textures/venus.jpg";
+import earth from "./textures/earth.jpg";
+import mars from "./textures/mars.jpg";
+import jupiter from "./textures/jupiter.jpg";
+import saturn from "./textures/saturn.jpg";
+import uranus from "./textures/uranus.jpg";
+import neptune from "./textures/neptune.jpg";
 const renderSystem = (scene) => {
   // Texture
   const textureLoader = new THREE.TextureLoader();
