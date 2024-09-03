@@ -11,15 +11,15 @@ import neptune from "./textures/neptune.jpg";
 const renderSystem = (scene) => {
   // Texture
   const textureLoader = new THREE.TextureLoader();
-  const sunTexture = textureLoader.load("./textures/sun.jpg");
-  const mercuryTexture = textureLoader.load("./textures/mercury.jpg");
-  const venusTexture = textureLoader.load("./textures/venus.jpg");
-  const earthTexture = textureLoader.load("./textures/earth.jpg");
-  const marsTexture = textureLoader.load("./textures/mars.jpg");
-  const jupiterTexture = textureLoader.load("./textures/jupiter.jpg");
-  const saturnTexture = textureLoader.load("./textures/saturn.jpg");
-  const uranusTexture = textureLoader.load("./textures/uranus.jpg");
-  const neptuneTexture = textureLoader.load("./textures/neptune.jpg");
+  const sunTexture = textureLoader.load(sun);
+  const mercuryTexture = textureLoader.load(mercury);
+  const venusTexture = textureLoader.load(venus);
+  const earthTexture = textureLoader.load(earth);
+  const marsTexture = textureLoader.load(mars);
+  const jupiterTexture = textureLoader.load(jupiter);
+  const saturnTexture = textureLoader.load(saturn);
+  const uranusTexture = textureLoader.load(uranus);
+  const neptuneTexture = textureLoader.load(neptune);
 
   // Sun
   const sunGeometry = new THREE.SphereGeometry(30, 16, 32);
