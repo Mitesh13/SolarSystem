@@ -200,6 +200,7 @@ const renderSystem = (scene) => {
 
   const clock = new THREE.Clock();
   return () => {
+    sunMesh.rotation.y = clock.getElapsedTime() / 25;
     mercuryMesh.rotation.y = clock.getElapsedTime() / 2;
     mercuryMesh.position.x = Math.cos(clock.getElapsedTime() * 3) * (60 + 0.5);
     mercuryMesh.position.z = Math.sin(clock.getElapsedTime() * 3) * (60 + 0.5);
