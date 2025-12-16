@@ -25,7 +25,7 @@ const renderSystem = (scene, camera) => {
   // Stars
   const starGeometry = new THREE.SphereGeometry(1000, 64, 64);
   const starMaterial = new THREE.MeshBasicMaterial({
-    map: new THREE.TextureLoader().load('/textures/stars.jpg'),
+    map: new THREE.TextureLoader().load('/textures/stars1.jpg'),
     side: THREE.BackSide, // IMPORTANT
   });
 
