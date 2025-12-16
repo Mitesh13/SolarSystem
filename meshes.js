@@ -8,7 +8,7 @@ import jupiter from "./textures/jupiter.jpg";
 import saturn from "./textures/saturn.jpg";
 import uranus from "./textures/uranus.jpg";
 import neptune from "./textures/neptune.jpg";
-const renderSystem = (scene) => {
+const renderSystem = (scene, camera) => {
   // Texture
   const textureLoader = new THREE.TextureLoader();
   const sunTexture = textureLoader.load(sun);
@@ -21,8 +21,19 @@ const renderSystem = (scene) => {
   const uranusTexture = textureLoader.load(uranus);
   const neptuneTexture = textureLoader.load(neptune);
 
+
+  // Stars
+  const starGeometry = new THREE.SphereGeometry(1000, 64, 64);
+  const starMaterial = new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load('/textures/stars.jpg'),
+    side: THREE.BackSide, // IMPORTANT
+  });
+
+  const starSphere = new THREE.Mesh(starGeometry, starMaterial);
+  scene.add(starSphere);
+
   // Sun
-  const sunGeometry = new THREE.SphereGeometry(30, 16, 32);
+  const sunGeometry = new THREE.SphereGeometry(30, 32, 64);
   const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
   const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
   scene.add(sunMesh);
@@ -38,16 +49,31 @@ const renderSystem = (scene) => {
   scene.add(mercuryMesh);
 
   // mercury ring
-  const torusmercuryGeometry = new THREE.RingGeometry(60, 60.2, 100);
-  const torusmercuryMaterial = new THREE.MeshBasicMaterial({
+  const createPointsForOrbit = (radius) => {
+    const points = [];
+
+    for (let i = 0; i <= 256; i++) {
+      const theta = (i / 256) * Math.PI * 2;
+      points.push(
+        new THREE.Vector3(
+          Math.cos(theta) * radius,
+          0,
+          Math.sin(theta) * radius
+        )
+      );
+    }
+    return points
+  }
+  const mercuryOrbitGeometry = new THREE.BufferGeometry().setFromPoints(createPointsForOrbit(60));
+  const planetMaterial = new THREE.LineBasicMaterial({
     color: 0x777777,
-    side: THREE.DoubleSide,
+    // depthTest: false,
   });
-  const torusmercuryMesh = new THREE.Mesh(
-    torusmercuryGeometry,
-    torusmercuryMaterial
+  const torusmercuryMesh = new THREE.LineLoop(
+    mercuryOrbitGeometry,
+    planetMaterial
   );
-  torusmercuryMesh.rotation.x = Math.PI / 2;
+  // torusmercuryMesh.rotation.x = Math.PI / 2;
   scene.add(torusmercuryMesh);
 
   // Venus
@@ -59,13 +85,10 @@ const renderSystem = (scene) => {
   scene.add(venusMesh);
 
   // venus ring
-  const torusvenusGeometry = new THREE.RingGeometry(88, 88.2, 100);
-  const torusvenusMaterial = new THREE.MeshBasicMaterial({
-    color: 0x777777,
-    side: THREE.DoubleSide,
-  });
-  const torusvenusMesh = new THREE.Mesh(torusvenusGeometry, torusvenusMaterial);
-  torusvenusMesh.rotation.x = Math.PI / 2;
+  const torusvenusGeometry = new THREE.BufferGeometry().setFromPoints(createPointsForOrbit(88));
+
+  const torusvenusMesh = new THREE.LineLoop(torusvenusGeometry, planetMaterial);
+  // torusvenusMesh.rotation.x = Math.PI / 2;
   scene.add(torusvenusMesh);
 
   // Earth
@@ -77,13 +100,12 @@ const renderSystem = (scene) => {
   scene.add(earthMesh);
 
   // earth ring
-  const torusearthGeometry = new THREE.RingGeometry(100, 100.2, 100);
-  const torusearthMaterial = new THREE.MeshBasicMaterial({
-    color: 0x777777,
-    side: THREE.DoubleSide,
-  });
-  const torusearthMesh = new THREE.Mesh(torusearthGeometry, torusearthMaterial);
-  torusearthMesh.rotation.x = Math.PI / 2;
+  const torusearthGeometry = new THREE.BufferGeometry().setFromPoints(createPointsForOrbit(100));
+  const torusearthMesh = new THREE.LineLoop(
+    torusearthGeometry,
+    planetMaterial
+  );
+  // torusearthMesh.rotation.x = Math.PI / 2;
   scene.add(torusearthMesh);
 
   // Mars
@@ -95,13 +117,9 @@ const renderSystem = (scene) => {
   scene.add(marsMesh);
 
   // Mars ring
-  const torusMarsGeometry = new THREE.RingGeometry(121, 121.2, 100);
-  const torusMarsMaterial = new THREE.MeshBasicMaterial({
-    color: 0x777777,
-    side: THREE.DoubleSide,
-  });
-  const torusMarsMesh = new THREE.Mesh(torusMarsGeometry, torusMarsMaterial);
-  torusMarsMesh.rotation.x = Math.PI / 2;
+  const torusMarsGeometry = new THREE.BufferGeometry().setFromPoints(createPointsForOrbit(121));
+  const torusMarsMesh = new THREE.LineLoop(torusMarsGeometry, planetMaterial);
+  // torusMarsMesh.rotation.x = Math.PI / 2;
   scene.add(torusMarsMesh);
 
   // Jupitar
@@ -115,16 +133,12 @@ const renderSystem = (scene) => {
   scene.add(jupiterMesh);
 
   // Jupiter ring
-  const torusJupiterGeometry = new THREE.RingGeometry(210, 210.2, 100);
-  const torusJupiterMaterial = new THREE.MeshBasicMaterial({
-    color: 0x777777,
-    side: THREE.DoubleSide,
-  });
-  const torusJupiterMesh = new THREE.Mesh(
+  const torusJupiterGeometry = new THREE.BufferGeometry().setFromPoints(createPointsForOrbit(210));
+  const torusJupiterMesh = new THREE.LineLoop(
     torusJupiterGeometry,
-    torusJupiterMaterial
+    planetMaterial
   );
-  torusJupiterMesh.rotation.x = Math.PI / 2;
+  // torusJupiterMesh.rotation.x = Math.PI / 2;
   scene.add(torusJupiterMesh);
 
   // Saturn
@@ -138,17 +152,12 @@ const renderSystem = (scene) => {
   scene.add(saturnMesh);
 
   // saturn ring
-  const torussaturnGeometry = new THREE.RingGeometry(270, 270.2, 100);
-  const torussaturnMaterial = new THREE.MeshBasicMaterial({
-    color: 0x777777,
-    side: THREE.DoubleSide,
-  });
-
-  const torussaturnMesh = new THREE.Mesh(
+  const torussaturnGeometry = new THREE.BufferGeometry().setFromPoints(createPointsForOrbit(270));
+  const torussaturnMesh = new THREE.LineLoop(
     torussaturnGeometry,
-    torussaturnMaterial
+    planetMaterial
   );
-  torussaturnMesh.rotation.x = Math.PI / 2;
+  // torussaturnMesh.rotation.x = Math.PI / 2;
   scene.add(torussaturnMesh);
 
   // uranus
@@ -162,17 +171,12 @@ const renderSystem = (scene) => {
   scene.add(uranusMesh);
 
   // uranus ring
-  const torusuranusGeometry = new THREE.RingGeometry(330, 330.2, 100);
-  const torusuranusMaterial = new THREE.MeshBasicMaterial({
-    color: 0x777777,
-    side: THREE.DoubleSide,
-  });
-
-  const torusuranusMesh = new THREE.Mesh(
+  const torusuranusGeometry = new THREE.BufferGeometry().setFromPoints(createPointsForOrbit(330));
+  const torusuranusMesh = new THREE.LineLoop(
     torusuranusGeometry,
-    torusuranusMaterial
+    planetMaterial
   );
-  torusuranusMesh.rotation.x = Math.PI / 2;
+  // torusuranusMesh.rotation.x = Math.PI / 2;
   scene.add(torusuranusMesh);
 
   // neptune
@@ -186,20 +190,18 @@ const renderSystem = (scene) => {
   scene.add(neptuneMesh);
 
   // neptune ring
-  const torusneptuneGeometry = new THREE.RingGeometry(380, 380.2, 100);
-  const torusneptuneMaterial = new THREE.MeshBasicMaterial({
-    color: 0x777777,
-    side: THREE.DoubleSide,
-  });
-  const torusneptuneMesh = new THREE.Mesh(
+  const torusneptuneGeometry = new THREE.BufferGeometry().setFromPoints(createPointsForOrbit(380));
+
+  const torusneptuneMesh = new THREE.LineLoop(
     torusneptuneGeometry,
-    torusneptuneMaterial
+    planetMaterial
   );
-  torusneptuneMesh.rotation.x = Math.PI / 2;
+  // torusneptuneMesh.rotation.x = Math.PI / 2;
   scene.add(torusneptuneMesh);
 
   const clock = new THREE.Clock();
   return () => {
+    starSphere.position.copy(camera.position);
     sunMesh.rotation.y = clock.getElapsedTime() / 25;
     mercuryMesh.rotation.y = clock.getElapsedTime() / 2;
     mercuryMesh.position.x = Math.cos(clock.getElapsedTime() * 3) * (60 + 0.5);
