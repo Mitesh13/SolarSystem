@@ -8,6 +8,7 @@ import jupiter from "./textures/jupiter.jpg";
 import saturn from "./textures/saturn.jpg";
 import uranus from "./textures/uranus.jpg";
 import neptune from "./textures/neptune.jpg";
+import stars from "./textures/stars.jpg";
 const renderSystem = (scene, camera) => {
   // Texture
   const textureLoader = new THREE.TextureLoader();
@@ -25,7 +26,7 @@ const renderSystem = (scene, camera) => {
   // Stars
   const starGeometry = new THREE.SphereGeometry(1000, 64, 64);
   const starMaterial = new THREE.MeshBasicMaterial({
-    map: new THREE.TextureLoader().load('/textures/stars1.jpg'),
+    map: new THREE.TextureLoader().load(stars),
     side: THREE.BackSide, // IMPORTANT
   });
 
